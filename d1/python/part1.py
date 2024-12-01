@@ -1,4 +1,4 @@
-f = open("input", "r")
+f = open("../input", "r")
 
 l1 = list()
 l2 = list()
