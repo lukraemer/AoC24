@@ -1,4 +1,4 @@
-f = open("input", "r")
+f = open("../input", "r")
 
 l1 = list()
 l2 = list()
@@ -16,7 +16,7 @@ for line in f:
     else:
         d[l2_element] = 1
 
-print(d)
+#print(d)
 
 score = 0
 
