@@ -18,7 +18,7 @@ def do_step(list):
         return True
 
 
-f = open("../input", "r")
+f = open("../test_input", "r")
 
 for line in f:
     splitted_line = list(map(int, list(line.strip())))
@@ -44,6 +44,7 @@ for i, n in enumerate(block):
     if n == ".":
         break
     checksum += int(n) * i
+print(block)
 
 
 print(f"Result Part 1: {checksum}")
