@@ -46,12 +46,17 @@ def calculate_token(button_a_x, button_a_y, button_b_x, button_b_y, prize_x, pri
         button_a_x, button_a_y, button_b_x, button_b_y, prize_x, prize_y, 0, 0
     )
     lowest_token_part2 = find_lowest_token_part2(
-        button_a_x, button_a_y, button_b_x, button_b_y, prize_x, prize_y
+        button_a_x,
+        button_a_y,
+        button_b_x,
+        button_b_y,
+        prize_x + 10000000000000,
+        prize_y + 10000000000000,
     )
     return lowest_token_part2
 
 
-with open("../test_input", "r") as f:
+with open("../input", "r") as f:
     lines = f.read()
     matches = re.findall(pattern, lines, re.MULTILINE)
     matches = [tuple(map(int, match)) for match in matches]
