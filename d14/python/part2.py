@@ -44,6 +44,18 @@ with open("../input", "r") as f:
             r.pos_x = new_x
             r.pos_y = new_y
             positions.append((new_x, new_y))
+        # create bitmap picture
+        bitmap = "P1\n101 103\n"
+        for y in range(height):
+            for x in range(width):
+                if (x, y) in positions:
+                    bitmap += "1 "
+                else:
+                    bitmap += "0 "
+            bitmap += "\n"
+        with open("SEC_" + str(i) + ".pbm", "w") as f:
+            f.write(bitmap)
+
         for p_x, p_y in positions:
             # Check if all surrouding positions are occupied
             if (
