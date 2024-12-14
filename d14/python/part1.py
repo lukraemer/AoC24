@@ -1,5 +1,5 @@
 from collections import Counter
-from math import ceil, floor
+from math import floor
 
 
 class Robot:
@@ -33,14 +33,13 @@ with open("../input", "r") as f:
         v_x, v_y = list(map(int, line.strip().split(" ")[1].split("=")[1].split(",")))
         robots.append(Robot(pos_x, pos_y, v_x, v_y))
 
-    for i in range(seconds):
-        for r in robots:
-            pos_x, pos_y = r.get_pos()
-            v_x, v_y = r.get_vel()
-            new_x = (pos_x + v_x + width) % width
-            new_y = (pos_y + v_y + height) % height
-            r.pos_x = new_x
-            r.pos_y = new_y
+    for r in robots:
+        pos_x, pos_y = r.get_pos()
+        v_x, v_y = r.get_vel()
+        new_x = (pos_x + v_x * seconds + width * seconds) % width
+        new_y = (pos_y + v_y * seconds + height * seconds) % height
+        r.pos_x = new_x
+        r.pos_y = new_y
 
     positions = list()
     quadrants = [0, 0, 0, 0]
@@ -61,13 +60,13 @@ with open("../input", "r") as f:
                 quadrants[3] += 1
 
     counter = Counter(positions)
-    for y in range(height):
-        for x in range(width):
-            if (x, y) in positions:
-                print(counter[(x, y)], end="")
-            else:
-                print(".", end="")
-        print()
-    print(quadrants)
+    # for y in range(height):
+    #    for x in range(width):
+    #        if (x, y) in positions:
+    #            print(counter[(x, y)], end="")
+    #        else:
+    #            print(".", end="")
+    #    print()
+    # print(quadrants)
 
     print(f"Result part 1: {quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3]}")
