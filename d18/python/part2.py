@@ -1,5 +1,6 @@
 from collections import defaultdict
-import math
+import sys
+import heapq
 
 f = open("../input", "r").read()
 
@@ -25,63 +26,45 @@ def get_neighbors(cell, cells):
 
 
 def dijkstra(cells, start, end):
-    cost = defaultdict(lambda: math.inf)
-    prev = defaultdict(lambda: None)
-    cost[start] = 0
-    unvisited = set(cells)
-    best_end = None
-    best_cost = math.inf
-
+    unvisited = [(0, start)]
+    heapq.heapify(unvisited)
+    visited = set()
+    cost = {start: 0}
     while unvisited:
-        current = min(unvisited, key=lambda x: cost[x])
-        current_cost = cost[current]
-
-        if current_cost == math.inf:
-            break
-
-        if current == end and current_cost < best_cost:
-            best_end = current
-            best_cost = current_cost
-
-        unvisited.remove(current)
+        current_cost, current = heapq.heappop(unvisited)
+        if current in visited:
+            continue
+        visited.add(current)
+        if current == end:
+            return True
 
         for neighbor in get_neighbors(current, cells):
-            if neighbor not in unvisited:
+            if neighbor in visited:
                 continue
+            if neighbor not in cost or cost[neighbor] > current_cost + 1:
+                cost[neighbor] = current_cost + 1
+                heapq.heappush(unvisited, (current_cost + 1, neighbor))
 
-            new_cost = current_cost + 1
-
-            if new_cost < cost[neighbor]:
-                cost[neighbor] = new_cost
-                prev[neighbor] = current
-
-    path = []
-    current = best_end
-    while current is not None:
-        path.append(current)
-        current = prev[current]
-
-    return path[::-1], best_cost
+    return False
 
 
 height, width = 6, 6
 height, width = 70, 70
-num_checked_bytes = 3450
 cells = set()
 start = (0, 0)
 end = (width, height)
 for y in range(height + 1):
     for x in range(width + 1):
         cells.add((x, y))
-lines = f.split("\n")
-for i in range(num_checked_bytes):
-    line = lines[i]
-    print(line)
+for line in f.split("\n"):
+    if line == "":
+        continue
     x, y = list(map(int, line.strip().split(",")))
     if ((x, y)) in cells:
         cells.remove((x, y))
-    path, cost = dijkstra(cells, start, end)
-    if cost == math.inf:
+    found = dijkstra(cells, start, end)
+    if not found:
         print(f"No path found after inserting {x}, {y}")
+        sys.exit(0)
 
 # print(f"Result Part 1: {grid.get_sum_gps_coordinates_boxes()}")
